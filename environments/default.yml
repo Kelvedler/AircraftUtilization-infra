@@ -35,6 +35,11 @@ traefik_compose_project_name: "traefik"
 # ETL settings
 etl_repository: "https://github.com/Kelvedler/AircraftUtilization-ETL" 
 etl_pythonpath: "/app"
+etl_s3_region: "{{ lookup('env', 'ETL_S3_REGION') }}"
+etl_s3_role_arn: "{{ lookup('env', 'ETL_S3_ROLE_ARN') }}"
+etl_s3_bucket: "{{ lookup('env', 'ETL_S3_BUCKET') }}"
+etl_s3_profile_arn: "{{ lookup('env', 'ETL_S3_PROFILE_ARN') }}"
+etl_s3_trust_anchor_arn: "{{ lookup('env', 'ETL_S3_TRUST_ANCHOR_ARN') }}"
 etl_s3_certificate: "client.crt" 
 etl_s3_private_key: "client.key"
 etl_cert_path: "/app/certs"
@@ -51,6 +56,7 @@ etl_airflow_base_log_folder: "/var/log/airflow"
 etl_airflow_webserver_config_file: "/app/airflow/webserver_config.py"
 etl_airflow_webserver_port: 8000
 etl_airflow_scheduler_child_process_log_directory: "/var/log/airflow/scheduler"
+etl_secret_key: "{{ lookup('env', 'ETL_SECRET_KEY') }}"
 
 # Mongo
 mongo_service: "mongo"
