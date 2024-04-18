@@ -1,0 +1,16 @@
+---
+# Domain records
+domain_record_airflow_server: "airflow.aircraft-utilization.{{ default_hosted_zone }}"
+
+# Docker images
+docker_image_tag_etl: "main-latest"
+
+# ETL settings
+etl_s3_region: "{{ lookup('env', 'ETL_S3_REGION') }}"
+etl_s3_role_arn: "{{ lookup('env', 'ETL_S3_ROLE_ARN') }}"
+etl_s3_bucket: "{{ lookup('env', 'ETL_S3_BUCKET') }}"
+etl_s3_profile_arn: "{{ lookup('env', 'ETL_S3_PROFILE_ARN') }}"
+etl_s3_trust_anchor_arn: "{{ lookup('env', 'ETL_S3_TRUST_ANCHOR_ARN') }}"
+
+etl_secret_key: "{{ lookup('env', 'ETL_SECRET_KEY') }}"
+

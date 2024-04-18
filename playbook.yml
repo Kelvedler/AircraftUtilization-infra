@@ -1,0 +1,79 @@
+---
+- name: Provision of Aircraft Utilization project
+  hosts: ["main"]
+
+  vars_files:
+    - "environments/default.yml"
+    - "environments/{{ env }}.yml"
+
+  tasks:
+    - name: Create project directory
+      ansible.builtin.file:
+        path: "{{ project_path }}"
+        state: directory
+        group: "{{ default_user }}"
+        owner: "{{ default_user }}"
+        mode: '755'
+      become: true
+      tags: ["project-dir"]
+
+    - name: Create ETL service directories
+      ansible.builtin.file:
+        path: "{{ project_path }}/{{ item.dir }}"
+        state: directory
+        group: root
+        owner: root
+        mode: "{{ item.mode }}"
+      loop:
+        - dir: "{{ etl_log_volume_dir }}"
+          mode: '755'
+        - dir: "{{ etl_cert_volume_dir }}"
+          mode: '600'
+      become: true
+      tags: ["project-dir", "etl-dir"]
+
+    - name: Copy ETL certificates
+      ansible.builtin.copy:
+        src: "certs/{{ item }}"
+        dest: "{{ project_path }}/{{ etl_cert_volume_dir }}/{{ item }}"
+        group: root
+        owner: root
+        mode: '600'
+      loop:
+        - "{{ etl_s3_certificate }}"
+        - "{{ etl_s3_private_key }}"
+      become: true
+      tags: ["etl-certs"]
+
+    - name: Copy ETL docker compose
+      ansible.builtin.template:
+        src: docker-compose-etl.yml.j2
+        dest: "{{ project_path }}/docker-compose-etl.yml"
+        group: "{{ default_user }}"
+        owner: "{{ default_user }}"
+        mode: '440'
+      tags: ["deploy", "deploy-etl"]
+
+    - name: Copy services docker compose
+      ansible.builtin.template:
+        src: docker-compose-services.yml.j2
+        dest: "{{ project_path }}/docker-compose-services.yml"
+        group: "{{ default_user }}"
+        owner: "{{ default_user }}"
+        mode: '440'
+      tags: ["deploy", "deploy-services"]
+
+    - name: Pull ETL image update
+      ansible.builtin.command: docker pull {{ docker_image_etl }}:{{ docker_image_tag_etl }}
+      changed_when: true
+      tags: ["deploy", "deploy-etl"]
+
+    - name: Start/Update ETL compose
+      ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-etl.yml up --force-recreate -d
+      changed_when: true
+      tags: ["deploy", "deploy-etl"]
+
+    - name: Start/Update services compose
+      ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-services.yml up --force-recreate -d
+      changed_when: true
+      tags: ["deploy", "deploy-services"]

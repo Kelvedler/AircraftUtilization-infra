@@ -1,0 +1,70 @@
+---
+default_user: "ansible"
+
+# Project
+project_name: "aircraft-utilization"
+project_path: "/opt/{{ project_name }}/{{ env }}"
+
+# Deploy
+deploy_branch: "{{ lookup('env', 'DEPLOY_BRANCH') }}"
+
+# Domain records
+default_hosted_zone: "kelvedler.dev"
+
+# LetsEncrypt
+letsencrypt_email: "hnflkmvjcm@gmail.com"
+
+# Docker images
+docker_image_traefik: "traefik:2.10.4"
+docker_image_etl: "kelvedler/aircraft-utilization-etl"
+docker_image_mongo: "mongo:7.0.7-jammy"
+docker_image_postgres: "postgres:15.4-alpine3.18"
+docker_image_redis: "redis:7.2.0-alpine3.18"
+
+# Docker containers
+docker_etl_name: "etl"
+
+# Docker compose project name
+compose_project_name: "{{ project_name }}-{{ env }}"
+
+# Traefik
+traefik_path: "/opt/traefik"
+traefik_network_name: "traefik-pub-net"
+traefik_compose_project_name: "traefik"
+
+# ETL settings
+etl_repository: "https://github.com/Kelvedler/AircraftUtilization-ETL" 
+etl_pythonpath: "/app"
+etl_s3_certificate: "client.crt" 
+etl_s3_private_key: "client.key"
+etl_cert_path: "/app/certs"
+etl_log_level: "INFO"
+etl_log_volume_dir: "etl/log"
+etl_cert_volume_dir: "etl/certs"
+etl_dag_processor_manager_log_location: "/var/log/airflow/dag_processor_manager/dag_processor_manager.log"
+etl_airflow_home: "/app/airflow"
+etl_airflow_core_dags_folder: "/app/dags"
+etl_airflow_core_executor: "CeleryExecutor"
+etl_airflow_core_load_examples: false
+etl_airflow_core_plugins_folder: "/app/plugins"
+etl_airflow_base_log_folder: "/var/log/airflow"
+etl_airflow_webserver_config_file: "/app/airflow/webserver_config.py"
+etl_airflow_webserver_port: 8000
+etl_airflow_scheduler_child_process_log_directory: "/var/log/airflow/scheduler"
+
+# Mongo
+mongo_service: "mongo"
+mongo_port: 27017
+mongo_user: "{{ lookup('env', 'MONGO_USER') }}"
+mongo_pass: "{{ lookup('env', 'MONGO_PASS') }}"
+
+# Postgres
+postgres_name: "{{ project_name }}-{{ env }}"
+postgres_service: "postgres"
+postgres_port: 5432
+postgres_user: "{{ lookup('env', 'POSTGRES_USER') }}"
+postgres_pass: "{{ lookup('env', 'POSTGRES_PASS') }}"
+
+# Redis
+redis_service: "redis"
+redis_port: 6379

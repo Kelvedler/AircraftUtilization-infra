@@ -1,0 +1,72 @@
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Action Type"
+        required: true
+        options:
+          - deploy
+          - deploy-etl
+          - deploy-services
+      branch:
+        description: "Source Branch"
+        required: true
+        options:
+          - main
+
+jobs:
+  deploy-main:
+    if: ${{ inputs.branch }} == "main"
+    name: ${{ inputs.tag }}-main
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_TAG: ${{ inputs.tag }}
+      DEPLOY_BRANCH: ${{ inputs.branch }}
+      MONGO_USER: ${{ vars.MONGO_USER }}
+      MONGO_PASS: ${{ secrets.MONGO_PASS }}
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
+      ETL_S3_REGION: ${{ vars.ETL_S3_REGION }}
+      ETL_S3_ROLE_ARN: ${{ secrets.ETL_S3_ROLE_ARN }}
+      ETL_S3_BUCKET: ${{ secrets.ETL_S3_BUCKET }}
+      ETL_S3_PROFILE_ARN: ${{ secrets.ETL_S3_PROFILE_ARN }}
+      ETL_S3_TRUST_ANCHOR_ARN: ${{ secrets.ETL_S3_TRUST_ANCHOR_ARN }}
+      ETL_SECRET_KEY: ${{ secrets.ETL_SECRET_KEY }}
+    steps:
+      - name: Cache Ansible
+        id: cache-ansible
+        uses: actions/cache@v3
+        with:
+          path: /etc/ansible
+          key: ${{ runner.os }}-ansible
+
+      - name: Install ansible
+        if: steps.cache-ansible.output.cache-hit != "true"
+        run: |
+          sudo apt install -y software-properties-common
+          sudo add-apt-repository --yes --update ppa:ansible/ansible
+          sudo apt install ansible
+
+      - name: Checkout infra repo
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ vars.DOCKER_REGISTRY_USER }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASS }}
+
+      - name: Add SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
+
+      - name: Run playbook
+        run: >
+          ansible-playbook 
+          -i inventory/aircraft-utilization 
+          -e env=main 
+          -l main 
+          -t $DEPLOY_TAG 
+          -v playbook.yml
+
