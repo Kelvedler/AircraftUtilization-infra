@@ -33,10 +33,6 @@ services:
       - AIRFLOW__CELERY__BROKER_URL=redis://{{ redis_service }}:{{ redis_port }}
       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://{{ postgres_user }}:{{ postgres_pass }}@{{ postgres_service }}:{{ postgres_port }}/{{ postgres_name }}
       - WEBSERVER_STORAGE_URI=redis://{{ redis_service }}:{{ redis_port }}
-    depends_on:
-      - {{ mongo_service }}
-      - {{ postgres_service }}
-      - {{ redis_service }}
     volumes:
       - {{ project_path }}/{{ etl_log_volume_dir }}:{{ etl_airflow_base_log_folder }}
       - {{ project_path }}/{{ etl_cert_volume_dir }}:{{ etl_cert_path }}
