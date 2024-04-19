@@ -19,6 +19,7 @@ jobs:
     if: ${{ inputs.branch }} == "main"
     name: ${{ inputs.tag }}-main
     runs-on: ubuntu-latest
+    environment: main
     env:
       DEPLOY_TAG: ${{ inputs.tag }}
       DEPLOY_BRANCH: ${{ inputs.branch }}
