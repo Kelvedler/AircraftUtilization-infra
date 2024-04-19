@@ -41,7 +41,7 @@ jobs:
           key: ${{ runner.os }}-ansible
 
       - name: Install ansible
-        if: steps.cache-ansible.output.cache-hit != "true"
+        if: steps.cache-ansible.output.cache-hit != 'true'
         run: |
           sudo apt install -y software-properties-common
           sudo add-apt-repository --yes --update ppa:ansible/ansible
