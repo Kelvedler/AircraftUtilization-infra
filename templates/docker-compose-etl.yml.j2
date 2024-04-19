@@ -49,7 +49,7 @@ services:
       - "traefik.http.routers.{{ env }}-{{ project_name }}-airflow-server.rule=Host(`{{ domain_record_airflow_server }}`)"
       - "traefik.http.routers.{{ env }}-{{ project_name }}-airflow-server.service={{ env }}-{{ project_name }}-airflow-server"
       - "traefik.http.routers.{{ env }}-{{ project_name }}-airflow-server.tls=true"
-      - "traefik.http.routers.{{ env }}-{{ project_name }}-airflow-server.certresolver=LE"
+      - "traefik.http.routers.{{ env }}-{{ project_name }}-airflow-server.tls.certresolver=LE"
 
       # Service 'airflow-server'
       - "traefik.http.routers.{{ env }}-{{ project_name }}-airflow-server.loadbalancer.server.port={{ etl_airflow_webserver_port }}"
