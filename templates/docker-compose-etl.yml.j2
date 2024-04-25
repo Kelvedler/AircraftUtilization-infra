@@ -4,6 +4,7 @@ services:
     image: "{{ docker_image_etl }}:{{ docker_image_tag_etl }}"
     environment:
       - PYTHONPATH={{ etl_pythonpath }}
+      - OPENSKY_AUTH={{ opensky_auth }}
       - S3_REGION={{ etl_s3_region }}
       - S3_ROLE_ARN={{ etl_s3_role_arn }}
       - S3_BUCKET={{ etl_s3_bucket }}

@@ -32,6 +32,9 @@ traefik_path: "/opt/traefik"
 traefik_network_name: "traefik-pub-net"
 traefik_compose_project_name: "traefik"
 
+# OpenSky Network
+opensky_auth: "{{ lookup('env', 'OPENSKY_AUTH') }}"
+
 # ETL settings
 etl_repository: "https://github.com/Kelvedler/AircraftUtilization-ETL" 
 etl_pythonpath: "/app"
