@@ -15,7 +15,7 @@ default_hosted_zone: "kelvedler.dev"
 letsencrypt_email: "hnflkmvjcm@gmail.com"
 
 # Docker images
-docker_image_traefik: "traefik:2.10.4"
+docker_image_traefik: "traefik:2.11.2"
 docker_image_etl: "kelvedler/aircraft-utilization-etl"
 docker_image_mongo: "mongo:7.0.7-jammy"
 docker_image_postgres: "postgres:15.4-alpine3.18"
