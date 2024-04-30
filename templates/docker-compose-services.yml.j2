@@ -21,6 +21,7 @@ services:
     volumes:
       - pg_etl_data:/var/lib/postgresql/data/
     restart: unless-stopped
+    command: -p 5432
     networks:
       - default
 
@@ -33,6 +34,7 @@ services:
     volumes:
       - pg_backend_data:/var/lib/postgresql/data/
     restart: unless-stopped
+    command: -p 5433
     networks:
       - default
 
