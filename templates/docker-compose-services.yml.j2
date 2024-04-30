@@ -18,10 +18,12 @@ services:
       - POSTGRES_DB={{ postgres_etl_name }}
       - POSTGRES_USER={{ postgres_etl_user }}
       - POSTGRES_PASSWORD={{ postgres_etl_pass }}
+      - PGPORT={{ postgres_etl_port }}
+    expose:
+      - "{{ postgres_etl_port }}"
     volumes:
       - pg_etl_data:/var/lib/postgresql/data/
     restart: unless-stopped
-    command: -p 5432
     networks:
       - default
 
@@ -31,10 +33,12 @@ services:
       - POSTGRES_DB={{ postgres_backend_name }}
       - POSTGRES_USER={{ postgres_backend_user }}
       - POSTGRES_PASSWORD={{ postgres_backend_pass }}
+      - PGPORT={{ postgres_backend_port }}
+    expose:
+      - "{{ postgres_backend_port }}"
     volumes:
       - pg_backend_data:/var/lib/postgresql/data/
     restart: unless-stopped
-    command: -p 5433
     networks:
       - default
 
