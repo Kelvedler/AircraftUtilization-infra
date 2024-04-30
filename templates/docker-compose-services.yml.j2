@@ -12,14 +12,26 @@ services:
     networks:
       - default
 
-  {{ postgres_service }}:
+  {{ postgres_etl_service }}:
     image: {{ docker_image_postgres }} 
     environment:
-      - POSTGRES_DB={{ postgres_name }}
-      - POSTGRES_USER={{ postgres_user }}
-      - POSTGRES_PASSWORD={{ postgres_pass }}
+      - POSTGRES_DB={{ postgres_etl_name }}
+      - POSTGRES_USER={{ postgres_etl_user }}
+      - POSTGRES_PASSWORD={{ postgres_etl_pass }}
     volumes:
-      - pg_data:/var/lib/postgresql/data/
+      - pg_etl_data:/var/lib/postgresql/data/
+    restart: unless-stopped
+    networks:
+      - default
+
+  {{ postgres_backend_service }}:
+    image: {{ docker_image_postgres }} 
+    environment:
+      - POSTGRES_DB={{ postgres_backend_name }}
+      - POSTGRES_USER={{ postgres_backend_user }}
+      - POSTGRES_PASSWORD={{ postgres_backend_pass }}
+    volumes:
+      - pg_backend_data:/var/lib/postgresql/data/
     restart: unless-stopped
     networks:
       - default
@@ -35,5 +47,6 @@ services:
 volumes:
   mongo_data:
   mongo_config:
-  pg_data:
+  pg_etl_data:
+  pg_backend_data:
   redis_data:

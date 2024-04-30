@@ -67,12 +67,19 @@ mongo_port: 27017
 mongo_user: "{{ lookup('env', 'MONGO_USER') }}"
 mongo_pass: "{{ lookup('env', 'MONGO_PASS') }}"
 
-# Postgres
-postgres_name: "{{ project_name }}-{{ env }}"
-postgres_service: "postgres"
-postgres_port: 5432
-postgres_user: "{{ lookup('env', 'POSTGRES_USER') }}"
-postgres_pass: "{{ lookup('env', 'POSTGRES_PASS') }}"
+# Postgres etl
+postgres_etl_name: "{{ project_name }}-{{ env }}"
+postgres_etl_service: "postgres-etl"
+postgres_etl_port: 5432
+postgres_etl_user: "{{ lookup('env', 'POSTGRES_ETL_USER') }}"
+postgres_etl_pass: "{{ lookup('env', 'POSTGRES_ETL_PASS') }}"
+
+# Postgres backend
+postgres_backend_name: "{{ project_name }}-{{ env }}"
+postgres_backend_service: "postgres-backend"
+postgres_backend_port: 5433
+postgres_backend_user: "{{ lookup('env', 'POSTGRES_BACKEND_USER') }}"
+postgres_backend_pass: "{{ lookup('env', 'POSTGRES_BACKEND_PASS') }}"
 
 # Redis
 redis_service: "redis"
