@@ -23,7 +23,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES={{ etl_airflow_core_load_examples }}
       - AIRFLOW__CORE__PLUGINS_FOLDER={{ etl_airflow_core_plugins_folder }}
       - AIRFLOW__CORE__FERNET_KEY={{ etl_secret_key }}
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://{{ postgres_etl_user }}:{{ postgres_etl_pass }}@{{ postgres_etl_service }}:{{ postgres_etl_port }}/{{ postgres_elt_name }}
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://{{ postgres_etl_user }}:{{ postgres_etl_pass }}@{{ postgres_etl_service }}:{{ postgres_etl_port }}/{{ postgres_etl_name }}
       - AIRFLOW__LOGGING__BASE_LOG_FOLDER={{ etl_airflow_base_log_folder }}
       - AIRFLOW__LOGGING_LOGGING_LEVEL={{ etl_log_level }}
       - AIRFLOW__LOGGING__DAG_PROCESSOR_MANAGER_LOG_LOCATION={{ etl_dag_processor_manager_log_location }}
