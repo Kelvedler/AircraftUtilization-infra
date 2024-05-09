@@ -65,6 +65,7 @@ etl_secret_key: "{{ lookup('env', 'ETL_SECRET_KEY') }}"
 # Admin settings
 admin_secret_key: "{{ lookup('env', 'ADMIN_SECRET_KEY') }}"
 admin_jwt_secure_cookies: true
+admin_jwt_exp_delta_minutes: 15
 admin_port: 8001
 
 # Mongo
