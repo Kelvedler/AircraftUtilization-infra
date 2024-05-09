@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  {{ docker_admin_name }}:
+    image: "{{ docker_image_admin }}:{{ docker_image_tag }}"
+    environment:
+      - SECRET_KEY={{ admin_secret_key }}
+      - JWT_SECURE_COOKIES={{ admin_jwt_secure_cookies }}
+      - JWT_EXP_DELTA_MINUTES={{ admin_jwt_exp_delta_minutes }}
+      - JWT_DOMAIN={{ domain_record_admin }}
+      - LOG_LEVEL={{ admin_log_level }}
+      - DATABASE_URL=postgres://{{ postgres_user }}:{{ postgres_pass }}@{{ postgres_service }}:{{ postgres_port }}/{{ postgres_name }}
+    restart: unless-stopped
+    networks:
+      - {{ traefik_network_name }}
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network={{ traefik_network_name }}"
+
+      # Http router 'admin'
+      - "traefik.http.routers.{{ env }}-{{ project_name }}-admin.entrypoints=websecure"
+      - "traefik.http.routers.{{ env }}-{{ project_name }}-admin.rule=Host(`{{ domain_record_admin }}`)"
+      - "traefik.http.routers.{{ env }}-{{ project_name }}-admin.service={{ env }}-{{ project_name }}-admin"
+      - "traefik.http.routers.{{ env }}-{{ project_name }}-admin.tls=true"
+      - "traefik.http.routers.{{ env }}-{{ project_name }}-admin.tls.certresolver=LE"
+
+      # Service 'admin'
+      - "traefik.http.services.{{ env }}-{{ project_name }}-admin.loadbalancer.server.port={{ admin_port }}"
+      - "traefik.http.services.{{ env }}-{{ project_name }}-admin.loadbalancer.server.scheme=http"
+
+networks:
+  {{ traefik_network_name }}:
+    external: true

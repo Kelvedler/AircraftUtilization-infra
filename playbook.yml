@@ -54,6 +54,15 @@
         mode: '440'
       tags: ["deploy", "deploy-etl"]
 
+    - name: Copy Admin docker compose
+      ansible.builtin.template:
+        src: docker-compose-admin.yml.j2
+        dest: "{{ project_path }}/docker-compose-admin.yml"
+        group: "{{ default_user }}"
+        owner: "{{ default_user }}"
+        mode: '440'
+      tags: ["deploy", "deploy-admin"]
+
     - name: Copy services docker compose
       ansible.builtin.template:
         src: docker-compose-services.yml.j2
@@ -64,14 +73,24 @@
       tags: ["deploy", "deploy-services"]
 
     - name: Pull ETL image update
-      ansible.builtin.command: docker pull {{ docker_image_etl }}:{{ docker_image_tag_etl }}
+      ansible.builtin.command: docker pull {{ docker_image_etl }}:{{ docker_image_tag }}
       changed_when: true
       tags: ["deploy", "deploy-etl"]
+
+    - name: Pull Admin image update
+      ansible.builtin.command: docker pull {{ docker_image_admin }}:{{ docker_image_tag }}
+      changed_when: true
+      tags: ["deploy", "deploy-admin"]
 
     - name: Start/Update ETL compose
       ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-etl.yml up --force-recreate -d
       changed_when: true
       tags: ["deploy", "deploy-etl"]
+
+    - name: Start/Update Admin compose
+      ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-admin.yml up --force-recreate -d
+      changed_when: true
+      tags: ["deploy", "deploy-admin"]
 
     - name: Start/Update services compose
       ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-services.yml up --force-recreate -d

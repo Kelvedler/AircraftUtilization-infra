@@ -1,7 +1,12 @@
 ---
 # Domain records
 domain_record_airflow_server: "airflow.aircraft-utilization.{{ default_hosted_zone }}"
+domain_record_admin: "admin.aircraft-utilization.{{ default_hosted_zone }}"
 
 # Docker images
-docker_image_tag_etl: "main-latest"
+docker_image_tag: "main-latest"
+
+# Log level
+etl_log_level: "INFO"
+admin_log_level: "INFO"
 

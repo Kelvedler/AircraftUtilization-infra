@@ -28,8 +28,8 @@ jobs:
       MONGO_PASS: ${{ secrets.MONGO_PASS }}
       POSTGRES_ETL_USER: ${{ vars.POSTGRES_ETL_USER }}
       POSTGRES_ETL_PASS: ${{ secrets.POSTGRES_ETL_PASS }}
-      POSTGRES_BACKEND_USER: ${{ vars.POSTGRES_BACKEND_USER }}
-      POSTGRES_BACKEND_PASS: ${{ secrets.POSTGRES_BACKEND_PASS }}
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
       ETL_S3_REGION: ${{ vars.ETL_S3_REGION }}
       ETL_S3_ROLE_ARN: ${{ secrets.ETL_S3_ROLE_ARN }}
       ETL_S3_BUCKET: ${{ secrets.ETL_S3_BUCKET }}
