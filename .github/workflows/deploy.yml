@@ -36,6 +36,7 @@ jobs:
       ETL_S3_PROFILE_ARN: ${{ secrets.ETL_S3_PROFILE_ARN }}
       ETL_S3_TRUST_ANCHOR_ARN: ${{ secrets.ETL_S3_TRUST_ANCHOR_ARN }}
       ETL_SECRET_KEY: ${{ secrets.ETL_SECRET_KEY }}
+      ADMIN_SECRET_KEY: ${{ secrets.ADMIN_SECRET_KEY }}
     steps:
       - name: Cache Ansible
         id: cache-ansible
