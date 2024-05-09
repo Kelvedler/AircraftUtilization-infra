@@ -10,6 +10,8 @@ services:
       - JWT_DOMAIN={{ domain_record_admin }}
       - LOG_LEVEL={{ admin_log_level }}
       - DATABASE_URL=postgres://{{ postgres_user }}:{{ postgres_pass }}@{{ postgres_service }}:{{ postgres_port }}/{{ postgres_name }}
+    expose:
+      - "{{ admin_port }}"
     restart: unless-stopped
     networks:
       - {{ traefik_network_name }}
