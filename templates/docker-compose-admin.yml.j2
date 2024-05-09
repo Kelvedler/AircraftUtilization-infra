@@ -4,6 +4,7 @@ services:
     image: "{{ docker_image_admin }}:{{ docker_image_tag }}"
     environment:
       - SECRET_KEY={{ admin_secret_key }}
+      - PORT={{ admin_port }}
       - JWT_SECURE_COOKIES={{ admin_jwt_secure_cookies }}
       - JWT_EXP_DELTA_MINUTES={{ admin_jwt_exp_delta_minutes }}
       - JWT_DOMAIN={{ domain_record_admin }}
