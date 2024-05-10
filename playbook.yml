@@ -45,6 +45,21 @@
       become: true
       tags: ["etl-certs"]
 
+    - name: Stop existing ETL compose
+      ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-etl.yml down
+      changed_when: true
+      tags: ["deploy", "deploy-etl"]
+
+    - name: Stop existing Admin compose
+      ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-admin.yml down
+      changed_when: true
+      tags: ["deploy", "deploy-admin"]
+
+    - name: Stop existing Services compose
+      ansible.builtin.command: docker-compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-services.yml down
+      changed_when: true
+      tags: ["deploy", "deploy-services"]
+
     - name: Copy ETL docker compose
       ansible.builtin.template:
         src: docker-compose-etl.yml.j2
