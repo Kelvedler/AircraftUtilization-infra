@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: main
     env:
-      COMPOSE_IGNORE_ORPHANS: True
       DEPLOY_TAG: ${{ inputs.tag }}
       DEPLOY_BRANCH: ${{ inputs.branch }}
       OPENSKY_AUTH: ${{ secrets.OPENSKY_AUTH }}
