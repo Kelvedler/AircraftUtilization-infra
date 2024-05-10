@@ -29,9 +29,6 @@ docker_admin_name: "admin"
 # Docker compose project name
 compose_project_name: "{{ project_name }}-{{ env }}"
 
-# Docker compose settings
-COMPOSE_IGNORE_ORPHANS: true
-
 # Traefik
 traefik_path: "/opt/traefik"
 traefik_network_name: "traefik-pub-net"
