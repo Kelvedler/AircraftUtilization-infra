@@ -1,6 +1,7 @@
 ---
 # Domain records
 domain_record_airflow_server: "airflow.aircraft-utilization.{{ default_hosted_zone }}"
+domain_record_backend: "api.aircraft-utilization.{{ default_hosted_zone }}"
 domain_record_admin: "admin.aircraft-utilization.{{ default_hosted_zone }}"
 
 # Docker images
