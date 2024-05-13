@@ -57,6 +57,15 @@
         mode: '440'
       tags: ["deploy", "deploy-etl"]
 
+    - name: Copy Backend docker compose
+      ansible.builtin.template:
+        src: docker-compose-backend.yml.j2
+        dest: "{{ project_path }}/docker-compose-backend.yml"
+        group: "{{ default_user }}"
+        owner: "{{ default_user }}"
+        mode: '440'
+      tags: ["deploy", "deploy-backend"]
+
     - name: Copy Admin docker compose
       ansible.builtin.template:
         src: docker-compose-admin.yml.j2
@@ -80,6 +89,11 @@
       changed_when: true
       tags: ["deploy", "deploy-etl"]
 
+    - name: Pull Backend image update
+      ansible.builtin.command: docker pull {{ docker_image_backend }}:{{ docker_image_tag }}
+      changed_when: true
+      tags: ["deploy", "deploy-backend"]
+
     - name: Pull Admin image update
       ansible.builtin.command: docker pull {{ docker_image_admin }}:{{ docker_image_tag }}
       changed_when: true
@@ -89,6 +103,11 @@
       ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-etl.yml up --force-recreate -d
       changed_when: true
       tags: ["deploy", "deploy-etl"]
+
+    - name: Start/Update Backend compose
+      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-backend.yml up --force-recreate -d
+      changed_when: true
+      tags: ["deploy", "deploy-backend"]
 
     - name: Start/Update Admin compose
       ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-admin.yml up --force-recreate -d

@@ -9,4 +9,6 @@ docker_image_tag: "main-latest"
 # Log level
 etl_log_level: "INFO"
 admin_log_level: "INFO"
+backend_log_level: "INFO"
+backend_system_log_level: "WARNING"
 
