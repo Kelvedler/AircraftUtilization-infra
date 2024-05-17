@@ -63,6 +63,8 @@ etl_airflow_webserver_config_file: "/app/airflow/webserver_config.py"
 etl_airflow_webserver_port: 8000
 etl_airflow_scheduler_child_process_log_directory: "/var/log/airflow/scheduler"
 etl_secret_key: "{{ lookup('env', 'ETL_SECRET_KEY') }}"
+etl_source_filename: "source"
+etl_meta_filename: "metafile"
 
 # Backend settings
 backend_port: 8002

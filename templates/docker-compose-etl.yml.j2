@@ -12,10 +12,13 @@ services:
       - S3_CERTIFICATE_PATH={{ etl_cert_path }}/{{ etl_s3_certificate }}
       - S3_PRIVATE_KEY_PATH={{ etl_cert_path }}/{{ etl_s3_private_key }}
       - S3_SERVICE_NAME=rolesanywhere
+      - SOURCE_FILENAME={{ etl_source_filename }}
+      - META_FILENAME={{ etl_meta_filename }}
       - MONGODB_HOST={{ mongo_service }}
       - MONGODB_PORT={{ mongo_port }}
       - MONGODB_USERNAME={{ mongo_user }}
       - MONGODB_PASSWORD={{ mongo_pass }}
+      - MONGODB_DB={{ mongo_name }}
       - AIRFLOW_HOME={{ etl_airflow_home }}
       - AIRFLOW__CORE__DAGS_FOLDER={{ etl_airflow_core_dags_folder }}
       - AIRFLOW__CORE__EXECUTOR={{ etl_airflow_core_executor }}
