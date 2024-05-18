@@ -76,7 +76,7 @@ admin_jwt_exp_delta_minutes: 15
 admin_port: 8001
 
 # Mongo
-mongo_name: "{{ project_name }}-{{ env }}"
+mongo_name: "{{ project_name }}-{{ env }}-1"
 mongo_service: "mongo"
 mongo_port: 27017
 mongo_user: "{{ lookup('env', 'MONGO_USER') }}"
