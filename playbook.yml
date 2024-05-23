@@ -48,41 +48,14 @@
       become: true
       tags: ["etl-certs"]
 
-    - name: Copy ETL docker compose
+    - name: Copy docker compose
       ansible.builtin.template:
-        src: docker-compose-etl.yml.j2
-        dest: "{{ project_path }}/docker-compose-etl.yml"
+        src: docker-compose.yml.j2
+        dest: "{{ project_path }}/docker-compose.yml"
         group: "{{ default_user }}"
         owner: "{{ default_user }}"
         mode: '440'
-      tags: ["deploy", "deploy-etl"]
-
-    - name: Copy Backend docker compose
-      ansible.builtin.template:
-        src: docker-compose-backend.yml.j2
-        dest: "{{ project_path }}/docker-compose-backend.yml"
-        group: "{{ default_user }}"
-        owner: "{{ default_user }}"
-        mode: '440'
-      tags: ["deploy", "deploy-backend"]
-
-    - name: Copy Admin docker compose
-      ansible.builtin.template:
-        src: docker-compose-admin.yml.j2
-        dest: "{{ project_path }}/docker-compose-admin.yml"
-        group: "{{ default_user }}"
-        owner: "{{ default_user }}"
-        mode: '440'
-      tags: ["deploy", "deploy-admin"]
-
-    - name: Copy services docker compose
-      ansible.builtin.template:
-        src: docker-compose-services.yml.j2
-        dest: "{{ project_path }}/docker-compose-services.yml"
-        group: "{{ default_user }}"
-        owner: "{{ default_user }}"
-        mode: '440'
-      tags: ["deploy", "deploy-services"]
+      tags: ["deploy", "deploy-etl", "deploy-backend", "deploy-admin", "deploy-services"]
 
     - name: Pull ETL image update
       ansible.builtin.command: docker pull {{ docker_image_etl }}:{{ docker_image_tag }}
@@ -100,21 +73,21 @@
       tags: ["deploy", "deploy-admin"]
 
     - name: Start/Update ETL compose
-      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-etl.yml up --force-recreate -d
+      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose.yml up {{ docker_etl_name }} --force-recreate -d
       changed_when: true
       tags: ["deploy", "deploy-etl"]
 
     - name: Start/Update Backend compose
-      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-backend.yml up --force-recreate -d
+      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose.yml up {{ docker_backend_name }} --force-recreate -d
       changed_when: true
       tags: ["deploy", "deploy-backend"]
 
     - name: Start/Update Admin compose
-      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-admin.yml up --force-recreate -d
+      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose.yml up {{ docker_admin_name }} --force-recreate -d
       changed_when: true
       tags: ["deploy", "deploy-admin"]
 
     - name: Start/Update services compose
-      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose-services.yml up --force-recreate -d
+      ansible.builtin.command: docker compose -p {{ compose_project_name }} -f {{ project_path }}/docker-compose.yml up {{ mongo_service }} {{ postgres_etl_service }} {{ postgres_service }} {{ redis_service }} --force-recreate -d
       changed_when: true
       tags: ["deploy", "deploy-services"]
